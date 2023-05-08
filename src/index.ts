@@ -35,7 +35,7 @@ function setNestedConditions(dbQuery: any, path: any, targetValue: any) {
   path = path.replace(/^\w+/, "where").replace(/\*/g, ".");
   const keys = path.split(".");
   const searchField = keys.pop();
-  const lastQueryObject = keys.reduce((obj: any, key:any) => (obj[key] = obj[key] || {}), dbQuery);
+  const lastQueryObject = keys.reduce((obj: any, key: any) => (obj[key] = obj[key] || {}), dbQuery);
   lastQueryObject[searchField] = targetValue;
   return dbQuery;
 }
@@ -102,14 +102,14 @@ export function buildSearchParams(query: Query): DbQuery {
   for (const key in query) {
     if (query.hasOwnProperty(key)) {
       const targetValue = getTargetValue(query[key]);
-        if (key.indexOf("*") !== -1) {
+      if (key.indexOf("*") !== -1) {
         dbQuery = setNestedConditions(dbQuery, key, targetValue);
-        } else {
-          if (dbQuery.where) {
-            dbQuery.where[key] = targetValue;
-          }
+      } else {
+        if (dbQuery.where) {
+          dbQuery.where[key] = targetValue;
         }
-    }   
+      }
+    }
   }
   dbQuery.skip = (page - 1) * count;
   dbQuery.take = count;
